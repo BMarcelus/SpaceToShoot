@@ -17,8 +17,11 @@ public class p1_controller : MonoBehaviour {
     private Rigidbody other_rb;
     private float buffer;
     private bool synced;
-
-
+    private KeyCode leftKey;
+    private KeyCode upKey;
+    private KeyCode rightKey;
+    private KeyCode downKey;
+    
 	void Start () {
         rb = GetComponent<Rigidbody>();
         other_rb = other_player.GetComponent<Rigidbody>();
@@ -27,6 +30,17 @@ public class p1_controller : MonoBehaviour {
         healthBar.value = healthPercent();
         Debug.Log(player + " CurrentHealth: " + currentHealth);
         synced = false;
+        if(player==1) {
+            leftKey = KeyCode.A;
+            upKey = KeyCode.W;
+            rightKey = KeyCode.D;
+            downKey = KeyCode.S;
+        } else {
+            leftKey = KeyCode.LeftArrow;
+            upKey = KeyCode.UpArrow;
+            rightKey = KeyCode.RightArrow;
+            downKey = KeyCode.DownArrow;
+        }
 	}
 	
 	void FixedUpdate () {
@@ -37,110 +51,54 @@ public class p1_controller : MonoBehaviour {
 
     void move() {
         Vector3 input = Vector3.zero;
-        if (player == 1) {
-            if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.D)) {
-                transform.rotation = Quaternion.Euler(0.0f, 45.0f, 0.0f);
-                input += transform.forward;
-            }
-            else if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.A)) {
-                transform.rotation = Quaternion.Euler(0.0f, -45.0f, 0.0f);
-                input += transform.forward;
-            }
-            else if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.D)) {
-                transform.rotation = Quaternion.Euler(0.0f, 135.0f, 0.0f);
-                input += transform.forward;
-            }
-            else if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.A)) {
-                transform.rotation = Quaternion.Euler(0.0f, -135.0f, 0.0f);
-                input += transform.forward;
-            }
-            else if (Input.GetKey(KeyCode.W)) {
-                transform.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
-                input += transform.forward;
-            }
-            else if (Input.GetKey(KeyCode.S)) {
-                transform.rotation = Quaternion.Euler(0.0f, 180.0f, 0.0f);
-                input += transform.forward;
-            }
-            else if (Input.GetKey(KeyCode.D)) {
-                transform.rotation = Quaternion.Euler(0.0f, 90.0f, 0.0f);
-                input += transform.forward;
-            }
-            else if (Input.GetKey(KeyCode.A)) {
-                transform.rotation = Quaternion.Euler(0.0f, 270.0f, 0.0f);
-                input += transform.forward;
-            }
+        if(Input.GetKey(leftKey)) {
+          input.x += -1;
         }
-
-        else if (player == 2) {
-            if (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.RightArrow)) {
-                transform.rotation = Quaternion.Euler(0.0f, 45.0f, 0.0f);
-                input += transform.forward;
-            }
-            else if (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.LeftArrow)) {
-                transform.rotation = Quaternion.Euler(0.0f, -45.0f, 0.0f);
-                input += transform.forward;
-            }
-            else if (Input.GetKey(KeyCode.DownArrow) && Input.GetKey(KeyCode.RightArrow)) {
-                transform.rotation = Quaternion.Euler(0.0f, 135.0f, 0.0f);
-                input += transform.forward;
-            }
-            else if (Input.GetKey(KeyCode.DownArrow) && Input.GetKey(KeyCode.LeftArrow)) {
-                transform.rotation = Quaternion.Euler(0.0f, -135.0f, 0.0f);
-                input += transform.forward;
-            }
-            else if (Input.GetKey(KeyCode.UpArrow)) {
-                transform.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
-                input += transform.forward;
-            }
-            else if (Input.GetKey(KeyCode.DownArrow)) {
-                transform.rotation = Quaternion.Euler(0.0f, 180.0f, 0.0f);
-                input += transform.forward;
-            }
-            else if (Input.GetKey(KeyCode.RightArrow)) {
-                transform.rotation = Quaternion.Euler(0.0f, 90.0f, 0.0f);
-                input += transform.forward;
-            }
-            else if (Input.GetKey(KeyCode.LeftArrow)) {
-                transform.rotation = Quaternion.Euler(0.0f, 270.0f, 0.0f);
-                input += transform.forward;
-            }
+        if(Input.GetKey(upKey)) {
+          input.z += 1;
+        }
+        if(Input.GetKey(rightKey)) {
+          input.x += 1;
+        }
+        if(Input.GetKey(downKey)) {
+          input.z += -1;
         }
         input.Normalize();
+        if(input.magnitude>0) {
+            transform.rotation = Quaternion.LookRotation(input);
+        }
         Vector3 movement = input * speed * Time.deltaTime;
         //Vector3 newPos = transform.position + movement;
 
         //if (newPos.x <= 12.5f && newPos.x >= -12.5f && newPos.z >= -3.0f && newPos.z <= 13.0f) {
             rb.MovePosition(transform.position + movement);
+            rb.velocity*=.5f;
+            // rb.velocity = movement;
+            // transform.position += movement;
+            // rb.AddForce(movement, ForceMode.Impulse);
+            // rb.sleep();
+            // rb.AddForce(movement*10, ForceMode.Impulse);
         //}
     }
 
     void shoot() {
-        if (!synced) {
-            if (Input.GetKey(KeyCode.Space)) {
-                if (buffer >= 1 / ROF) {
-                    var b = Instantiate(bullet, transform.position, transform.rotation);
-                    b.transform.position += 1.0f * b.transform.forward;
-                    buffer = 0.0f;
-                }
-                else {
-                    buffer += Time.deltaTime;
-                }
-            }
-        }
-
-        else if (synced) {
-            if (Input.GetKey(KeyCode.Space)) {
-                if (buffer >= 1 / ROF) {
+        if (Input.GetKey(KeyCode.Space)) {
+            if (buffer >= 1 / ROF) {
+                Quaternion rotation;
+                if(!synced) {
+                    rotation = transform.rotation;
+                } else {
                     Vector3 otherDirection = (other_rb.position - transform.position).normalized;
-                    Quaternion pointToOther = Quaternion.LookRotation(otherDirection);
-                    var b = Instantiate(bullet, transform.position, pointToOther);
-                    b.transform.position += 1.0f * b.transform.forward;
-                    buffer = 0.0f;
+                    rotation = Quaternion.LookRotation(otherDirection);
                 }
-                else {
-                    buffer += Time.deltaTime;
-                }
+                var b = Instantiate(bullet, transform.position, rotation);
+                b.transform.position += 1.5f * b.transform.forward;
+                b.GetComponent<bullet_controller>().parentId = player;
+                b.GetComponent<Renderer>().material = GetComponent<Renderer>().material;
+                buffer = 0.0f;
+            }
+            else {
+                buffer += Time.deltaTime;
             }
         }
     }
@@ -157,13 +115,31 @@ public class p1_controller : MonoBehaviour {
     }
 
     void OnTriggerEnter(Collider other){
-        if(other.tag == "bullet"){
-            currentHealth -= bullet_controller.damage;
+        if(other.tag == "bullet" && other.GetComponent<bullet_controller>().parentId != player){
+            TakeDamage(bullet_controller.damage);
             Debug.Log(player + " CurrentHealth: " + currentHealth);
         }
-        healthBar.value = healthPercent();
+    }
+    
+    void OnCollisionEnter(Collision col) {
+      if(col.gameObject.tag == "Enemy") {
+          TakeDamage(EnemeyScript.damage);
+          Vector3 dist = col.gameObject.transform.position - transform.position;
+          // transform.position -= dist.normalized*1;
+          // rb.MovePosition(transform.position - dist.normalized*1);
+          rb.AddForce(-dist*20, ForceMode.Impulse);
+          // col.gameObject.transform.position += dist.normalized*1;
+      }
     }
 
+    private void TakeDamage(float amount) {
+      currentHealth -= amount;
+      healthBar.value = healthPercent();
+      if(currentHealth<=0) {
+        PlayerPrefs.SetString("previous", UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+        UnityEngine.SceneManagement.SceneManager.LoadScene("death_screen");
+      }
+    }
     float healthPercent() {
         return currentHealth / maxHealth;
     }

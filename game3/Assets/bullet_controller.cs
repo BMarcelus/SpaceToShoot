@@ -7,6 +7,7 @@ public class bullet_controller : MonoBehaviour {
     public float speed = 10.0f;
     public static float damage = 5.0f;
     private Rigidbody rb;
+    public int parentId;
 
     void Start() {
         rb = GetComponent<Rigidbody>();
@@ -17,6 +18,9 @@ public class bullet_controller : MonoBehaviour {
     }
 
     void OnBecameInvisible() {
+        Destroy(gameObject);
+    }
+    void OnTriggerEnter(Collider other){
         Destroy(gameObject);
     }
 }
