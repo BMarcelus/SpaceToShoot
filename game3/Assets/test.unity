@@ -721,7 +721,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4388583783909978, guid: 820f73c5e96b84b03911369fa18bbf5f, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -17.5
+      value: -3.17
       objectReference: {fileID: 0}
     - target: {fileID: 4388583783909978, guid: 820f73c5e96b84b03911369fa18bbf5f, type: 2}
       propertyPath: m_LocalPosition.y
@@ -761,6 +761,11 @@ Prefab:
       propertyPath: players.Array.data[1]
       value: 
       objectReference: {fileID: 1931217684}
+    - target: {fileID: 114420659454291480, guid: 820f73c5e96b84b03911369fa18bbf5f,
+        type: 2}
+      propertyPath: speed
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 820f73c5e96b84b03911369fa18bbf5f, type: 2}
   m_IsPrefabParent: 0
