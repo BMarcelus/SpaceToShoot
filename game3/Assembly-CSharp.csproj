@@ -54,6 +54,7 @@
      <Compile Include="Assets\bullet_controller.cs" />
      <Compile Include="Assets\dscreen_button.cs" />
      <Compile Include="Assets\EnemeyScript.cs" />
+     <Compile Include="Assets\menu_buttons.cs" />
      <Compile Include="Assets\p1_controller.cs" />
      <Compile Include="Assets\SpawnerScript.cs" />
  <Reference Include="UnityEngine.UI">

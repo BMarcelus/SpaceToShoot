@@ -21,6 +21,8 @@ public class bullet_controller : MonoBehaviour {
         Destroy(gameObject);
     }
     void OnTriggerEnter(Collider other){
-        Destroy(gameObject);
+        if (other.tag != "bullet") {
+            Destroy(gameObject);
+        }
     }
 }

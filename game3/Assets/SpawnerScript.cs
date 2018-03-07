@@ -6,21 +6,20 @@ public class SpawnerScript : MonoBehaviour {
 
   public GameObject Enemy;
   public float time = 1;
+  private float buffer;
 	// Use this for initialization
 	void Start () {
-		StartCoroutine(run());
+        buffer = 0;
 	}
 	
-  IEnumerator run() {
-    while(true) {
-      yield return new WaitForSeconds(time);
-      Spawn();
-    }
-  }
 
 	// Update is called once per frame
 	void Update () {
-		
+        if (buffer >= time) {
+            Spawn();
+            buffer = 0;
+        }
+        buffer += Time.deltaTime;
 	}
 
   private void Spawn() {

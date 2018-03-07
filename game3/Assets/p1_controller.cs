@@ -72,11 +72,11 @@ public class p1_controller : MonoBehaviour {
 
         //if (newPos.x <= 12.5f && newPos.x >= -12.5f && newPos.z >= -3.0f && newPos.z <= 13.0f) {
             rb.MovePosition(transform.position + movement);
-            rb.velocity*=.5f;
-            // rb.velocity = movement;
+            //rb.velocity = movement.normalized * speed;
+            rb.velocity = movement;
             // transform.position += movement;
             // rb.AddForce(movement, ForceMode.Impulse);
-            // rb.sleep();
+            //rb.Sleep();
             // rb.AddForce(movement*10, ForceMode.Impulse);
         //}
     }
@@ -97,10 +97,8 @@ public class p1_controller : MonoBehaviour {
                 b.GetComponent<Renderer>().material = GetComponent<Renderer>().material;
                 buffer = 0.0f;
             }
-            else {
-                buffer += Time.deltaTime;
-            }
         }
+        buffer += Time.deltaTime;
     }
 
     void switchMode() {
@@ -126,7 +124,8 @@ public class p1_controller : MonoBehaviour {
           TakeDamage(EnemeyScript.damage);
           Vector3 dist = col.gameObject.transform.position - transform.position;
           // transform.position -= dist.normalized*1;
-          // rb.MovePosition(transform.position - dist.normalized*1);
+          //rb.MovePosition(transform.position - dist.normalized*1);
+          //rb.Sleep();
           rb.AddForce(-dist*20, ForceMode.Impulse);
           // col.gameObject.transform.position += dist.normalized*1;
       }

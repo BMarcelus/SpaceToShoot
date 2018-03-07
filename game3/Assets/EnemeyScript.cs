@@ -6,7 +6,7 @@ public class EnemeyScript : MonoBehaviour {
 
   public GameObject[] players;
   private Rigidbody rb;
-  public float speed = 2f;
+  public float speed = 200.0f;
   private Vector3 velocity = new Vector3();
   private Transform healthDisplay;
   private Vector3 startHealthSize;
@@ -23,12 +23,13 @@ public class EnemeyScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-    rb.MovePosition(transform.position + velocity * Time.deltaTime * speed);
     // rb.velocity = velocity;
     // velocity.x = Mathf.Cos(Time.time*10);
     // velocity.y = Mathf.Sin(Time.time*10);
     GameObject p = FindClosestPlayer();
     velocity = p.transform.position - transform.position;
+    rb.velocity = velocity.normalized*speed;
+    //rb.MovePosition(transform.position + (velocity.normalized * Time.deltaTime * speed));
 	}
   
   private GameObject FindClosestPlayer() {
