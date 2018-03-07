@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class bullet_controller : MonoBehaviour {
 
-    public float speed = 10.0f;
-    public static float damage = 5.0f;
+    public float speed = 5.0f;
+    public static float damage = 20.0f;
     private Rigidbody rb;
     public int parentId;
 

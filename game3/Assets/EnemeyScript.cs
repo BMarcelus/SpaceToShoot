@@ -13,6 +13,7 @@ public class EnemeyScript : MonoBehaviour {
   public float maxHealth = 30;
   private float health;
   public static float damage = 5;
+  public int playerId;
 	// Use this for initialization
 	void Start () {
     rb = GetComponent<Rigidbody>();
@@ -48,10 +49,15 @@ public class EnemeyScript : MonoBehaviour {
 
   void OnTriggerEnter(Collider col) {
     if(col.tag == "bullet") {
-      health -= bullet_controller.damage;
-      if(health<=0) {
-        Destroy(gameObject);
-        return;
+      if(playerId!=0&&col.GetComponent<bullet_controller>().parentId!=playerId) {
+        health += bullet_controller.damage;
+        if(health>maxHealth)health=maxHealth;  
+      } else {
+        health -= bullet_controller.damage;
+        if(health<=0) {
+          Destroy(gameObject);
+          return;
+        }
       }
       Vector3 healthSize = startHealthSize;
       healthSize.x *= health/maxHealth;

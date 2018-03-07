@@ -23,6 +23,7 @@ public class SpawnerScript : MonoBehaviour {
 	}
 
   private void Spawn() {
-    Instantiate(Enemy, transform.position, Quaternion.identity);
+    GameObject enemy = Instantiate(Enemy, transform.position, Quaternion.identity);
+    enemy.SetActive(true);
   }
 }

@@ -8,7 +8,7 @@ public class p1_controller : MonoBehaviour {
     public float maxHealth = 100.0f;
     private float currentHealth;
     public float speed = 1.0f;
-    public float ROF = 25.0f;
+    private float ROF = 5.0f;
     public GameObject bullet;
     public UnityEngine.UI.Slider healthBar;
     public GameObject other_player;
@@ -46,8 +46,11 @@ public class p1_controller : MonoBehaviour {
 	void FixedUpdate () {
         move();
         shoot();
-        switchMode();
 	}
+
+  void Update() {
+      switchMode();
+  }
 
     void move() {
         Vector3 input = Vector3.zero;
