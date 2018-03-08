@@ -29,7 +29,7 @@ public class p1_controller : MonoBehaviour {
         currentHealth = maxHealth;
         healthBar.value = healthPercent();
         Debug.Log(player + " CurrentHealth: " + currentHealth);
-        synced = false;
+        synced = true;
         if(player==1) {
             leftKey = KeyCode.A;
             upKey = KeyCode.W;
@@ -117,7 +117,7 @@ public class p1_controller : MonoBehaviour {
 
     void OnTriggerEnter(Collider other){
         if(other.tag == "bullet" && other.GetComponent<bullet_controller>().parentId != player){
-            TakeDamage(bullet_controller.damage);
+            TakeDamage(bullet_controller.damage/5.0f);
             Debug.Log(player + " CurrentHealth: " + currentHealth);
         }
     }

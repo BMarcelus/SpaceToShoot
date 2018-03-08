@@ -14,6 +14,7 @@ public class EnemeyScript : MonoBehaviour {
   private float health;
   public static float damage = 5;
   public int playerId;
+  private float fallSpeed = 0.05f;
 	// Use this for initialization
 	void Start () {
     rb = GetComponent<Rigidbody>();
@@ -27,12 +28,24 @@ public class EnemeyScript : MonoBehaviour {
     // rb.velocity = velocity;
     // velocity.x = Mathf.Cos(Time.time*10);
     // velocity.y = Mathf.Sin(Time.time*10);
-    GameObject p = FindClosestPlayer();
-    velocity = p.transform.position - transform.position;
-    rb.velocity = velocity.normalized*speed;
+        if (transform.position.y < 0) {
+            rb.MovePosition(new Vector3(transform.position.x,0,transform.position.z));
+        }
+        else if (transform.position.y == 0) {
+            moveToPlayer();
+        }
+        else {
+            rb.MovePosition(new Vector3(transform.position.x, transform.position.y - fallSpeed, transform.position.z));
+        }
     //rb.MovePosition(transform.position + (velocity.normalized * Time.deltaTime * speed));
 	}
-  
+
+    void moveToPlayer() {
+        GameObject p = FindClosestPlayer();
+        velocity = p.transform.position - transform.position;
+        rb.velocity = velocity.normalized * speed;
+    }
+
   private GameObject FindClosestPlayer() {
     GameObject player = players[0];
     float minDist = - 1;
@@ -56,6 +69,8 @@ public class EnemeyScript : MonoBehaviour {
         health -= bullet_controller.damage;
         if(health<=0) {
           Destroy(gameObject);
+          b_level1.killCount += 1;
+          Debug.Log(b_level1.killCount);
           return;
         }
       }
@@ -63,5 +78,12 @@ public class EnemeyScript : MonoBehaviour {
       healthSize.x *= health/maxHealth;
       healthDisplay.localScale = healthSize;
     }
+  }
+
+  void OnCollisionEnter(Collision col) {
+      if (col.gameObject.tag == "Player") {
+          Vector3 dist = col.gameObject.transform.position - transform.position;
+          rb.AddForce(-dist * 50, ForceMode.Impulse);
+      }
   }
 }
