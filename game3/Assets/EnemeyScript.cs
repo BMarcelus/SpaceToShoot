@@ -84,9 +84,9 @@ public class EnemeyScript : MonoBehaviour {
   void OnTriggerEnter(Collider col) {
     if(col.tag == "bullet") {
       bullet_controller bc = col.GetComponent<bullet_controller>();
-      if(bc.parentId==0) return;
+      if(bc.parentId==7) return;
       if(playerId!=0&&bc.parentId!=playerId) {
-        bc.parentId = 0;
+        bc.parentId = 7;
         bc.transform.Rotate(new Vector3(0, 180, 0));
         bc.speed = bc.speed/2;
         reflectEffectTimer=reflectEffectTime;

@@ -531,7 +531,7 @@ Prefab:
     - target: {fileID: 114420659454291480, guid: 820f73c5e96b84b03911369fa18bbf5f,
         type: 2}
       propertyPath: playerId
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 820f73c5e96b84b03911369fa18bbf5f, type: 2}
@@ -959,24 +959,6 @@ Prefab:
       propertyPath: players.Array.data[1]
       value: 
       objectReference: {fileID: 1931217684}
-    - target: {fileID: 114420659454291480, guid: 820f73c5e96b84b03911369fa18bbf5f,
-        type: 2}
-      propertyPath: speed
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4225982406515438, guid: 820f73c5e96b84b03911369fa18bbf5f, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1457628440467754, guid: 820f73c5e96b84b03911369fa18bbf5f, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114420659454291480, guid: 820f73c5e96b84b03911369fa18bbf5f,
-        type: 2}
-      propertyPath: maxHealth
-      value: 60
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 820f73c5e96b84b03911369fa18bbf5f, type: 2}
   m_IsPrefabParent: 0
@@ -2061,7 +2043,7 @@ Prefab:
     - target: {fileID: 114420659454291480, guid: 820f73c5e96b84b03911369fa18bbf5f,
         type: 2}
       propertyPath: playerId
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 23993359497223094, guid: 820f73c5e96b84b03911369fa18bbf5f,
         type: 2}
