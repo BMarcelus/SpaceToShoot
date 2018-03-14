@@ -22,6 +22,7 @@ public class bullet_controller : MonoBehaviour {
     }
     void OnTriggerEnter(Collider other){
         if (other.tag != "bullet") {
+            if(other.tag=="Enemy" && (parentId == 0 || other.GetComponent<EnemeyScript>().playerId != parentId))return;
             Destroy(gameObject);
         }
     }

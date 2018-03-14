@@ -8,7 +8,7 @@ public class p1_controller : MonoBehaviour {
     public float maxHealth = 100.0f;
     private float currentHealth;
     public float speed = 1.0f;
-    private float ROF = 5.0f;
+    private float ROF = 2.0f;
     public GameObject bullet;
     public UnityEngine.UI.Slider healthBar;
     public GameObject other_player;
@@ -21,6 +21,9 @@ public class p1_controller : MonoBehaviour {
     private KeyCode upKey;
     private KeyCode rightKey;
     private KeyCode downKey;
+
+    private float invulTimer = 0;
+    private float invulTime = 1;
     
 	void Start () {
         rb = GetComponent<Rigidbody>();
@@ -46,9 +49,18 @@ public class p1_controller : MonoBehaviour {
 	void FixedUpdate () {
         move();
         shoot();
+        MeshRenderer r = gameObject.GetComponent<MeshRenderer>();        
+        if(invulTimer>0) {
+          r.enabled = !r.enabled;
+        } else {
+          r.enabled = true;
+        }
 	}
 
   void Update() {
+      if(invulTimer>0) {
+        invulTimer -= Time.deltaTime;
+      }
       switchMode();
   }
 
@@ -117,6 +129,7 @@ public class p1_controller : MonoBehaviour {
 
     void OnTriggerEnter(Collider other){
         if(other.tag == "bullet" && other.GetComponent<bullet_controller>().parentId != player){
+            if(invulTimer>0)return;            
             TakeDamage(bullet_controller.damage/5.0f);
             Debug.Log(player + " CurrentHealth: " + currentHealth);
         }
@@ -124,6 +137,7 @@ public class p1_controller : MonoBehaviour {
     
     void OnCollisionEnter(Collision col) {
       if(col.gameObject.tag == "Enemy") {
+          if(invulTimer>0)return;        
           TakeDamage(EnemeyScript.damage);
           Vector3 dist = col.gameObject.transform.position - transform.position;
           // transform.position -= dist.normalized*1;
@@ -135,6 +149,7 @@ public class p1_controller : MonoBehaviour {
     }
 
     private void TakeDamage(float amount) {
+      invulTimer = invulTime;
       currentHealth -= amount;
       healthBar.value = healthPercent();
       if(currentHealth<=0) {
