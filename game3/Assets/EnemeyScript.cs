@@ -14,12 +14,15 @@ public class EnemeyScript : MonoBehaviour {
   private float health;
   public static float damage = 5;
   public int playerId;
-  private float fallSpeed = 0.05f;
+  private float fallSpeed = 0.03f;
 	// Use this for initialization
   private float reflectEffectTimer = 0;
   private float reflectEffectTime = .2f;
   private float hitEffectTimer = 0;
   private float hitEffectTime = .1f;
+  private Vector3 targetPosition;
+  private bool targetting = false;
+  public LayerMask obstructionlayers;
 
     //private NavMeshAgent navAgent;
   AudioSource gettingHit;
@@ -44,9 +47,10 @@ public class EnemeyScript : MonoBehaviour {
     // rb.velocity = velocity;
     // velocity.x = Mathf.Cos(Time.time*10);
     // velocity.y = Mathf.Sin(Time.time*10);
+    rb.velocity = rb.velocity*.9f;    
     if(reflectEffectTimer>0) {
       reflectEffectTimer -= Time.deltaTime;
-      rb.velocity = Vector3.zero;
+      // rb.velocity = Vector3.zero;
       if(reflectEffectTimer<=0) {
         transform.localScale = new Vector3(1,1,1);
       }
@@ -54,7 +58,7 @@ public class EnemeyScript : MonoBehaviour {
     }
     if(hitEffectTimer>0) {
       hitEffectTimer -= Time.deltaTime;
-      rb.velocity = Vector3.zero;
+      // rb.velocity = Vector3.zero;
       if(hitEffectTimer<=0) {
         transform.localScale = new Vector3(1,1,1);
       }
@@ -76,8 +80,19 @@ public class EnemeyScript : MonoBehaviour {
     void moveToPlayer() {
         GameObject p = FindClosestPlayer();
         //navAgent.destination = p.transform.position;
-        velocity = p.transform.position - transform.position;
-        rb.velocity = velocity.normalized * speed;
+        if(!targetting) {
+          if(Random.Range(0,20)<1) {
+            velocity = Quaternion.Euler(0, Random.Range(0,360), 0) * transform.forward;
+          }
+          if(Random.Range(0,20)<1) {
+            velocity = Vector3.zero;
+          }
+        }
+        // if(targetting) {
+          // rb.velocity = velocity.normalized * speed;
+          // rb.velocity=Vector3.zero;
+          rb.MovePosition(transform.position + velocity.normalized*speed*Time.deltaTime);
+        // }
     }
 
   private GameObject FindClosestPlayer() {
@@ -86,9 +101,20 @@ public class EnemeyScript : MonoBehaviour {
     for(int i=0;i<players.Length;i++) {
       GameObject p = players[i];
       float dist = (transform.position - p.transform.position).magnitude;
-      if(minDist<0||dist<minDist) {
-        minDist = dist;
-        player = p;
+      Ray ray = new Ray();
+      ray.origin = transform.position;
+      ray.direction = p.transform.position-transform.position;
+      RaycastHit hit;
+      if (Physics.Raycast(ray, out hit, 20f, obstructionlayers)) {
+        if(hit.collider.tag == "Player") {
+          if(minDist<0||dist<minDist) {
+            minDist = dist;
+            player = p;
+          }
+          targetPosition = p.transform.position;
+          velocity = targetPosition - transform.position;            
+          targetting = true;
+        }
       }
     }
     return player;

@@ -23,7 +23,7 @@ public class p1_controller : MonoBehaviour {
     private KeyCode downKey;
 
     private float invulTimer = 0;
-    private float invulTime = 1;
+    private float invulTime = .7f;
     AudioSource fireAud;
     AudioSource dmgAud;
     AudioSource friendlyAud;
@@ -39,6 +39,8 @@ public class p1_controller : MonoBehaviour {
 
     public GameObject pauseMenu;
     private bool paused;
+    private Transform cannon;
+    private float recoil =0;
 	void Start () {
         AudioSource[] auds = GetComponents<AudioSource>();
         fireAud = auds[0];
@@ -68,17 +70,21 @@ public class p1_controller : MonoBehaviour {
             rightKey = KeyCode.RightArrow;
             downKey = KeyCode.DownArrow;
         }
+        cannon = transform.Find("Cannon");
 	}
 	
 	void FixedUpdate () {
         move();
         shoot();
-        MeshRenderer r = gameObject.GetComponent<MeshRenderer>();        
+        Renderer r = gameObject.GetComponent<Renderer>();        
         if(invulTimer>0) {
           r.enabled = !r.enabled;
         } else {
           r.enabled = true;
         }
+        if(cannon)
+        cannon.gameObject.SetActive(r.enabled);   
+      recoil = recoil * .75f;        
 	}
 
   void Update() {
@@ -103,6 +109,21 @@ public class p1_controller : MonoBehaviour {
           pauseMenu.SetActive(false);
 
       }
+      Quaternion rotation;
+      if(!synced) {
+          rotation = transform.rotation;
+      } else {
+          Vector3 otherDirection = (other_rb.position - transform.position).normalized;
+          rotation = Quaternion.LookRotation(otherDirection);
+      }
+      if(cannon) {
+        cannon.rotation = Quaternion.Euler(-recoil*90,rotation.eulerAngles.y,0);
+        cannon.Find("Cube").transform.localPosition = new Vector3(0,0,.331f-recoil);
+        GameObject light = cannon.Find("Light").gameObject;
+        if(recoil>.3) light.SetActive(true);
+        else light.SetActive(false);
+      }
+
   }
 
     void move() {
@@ -135,6 +156,7 @@ public class p1_controller : MonoBehaviour {
             //rb.Sleep();
             // rb.AddForce(movement*10, ForceMode.Impulse);
         //}
+        
     }
 
     void shoot() {
@@ -143,9 +165,11 @@ public class p1_controller : MonoBehaviour {
                 Quaternion rotation;
                 if(!synced) {
                     rotation = transform.rotation;
+                    recoil = .2f;                    
                 } else {
                     Vector3 otherDirection = (other_rb.position - transform.position).normalized;
                     rotation = Quaternion.LookRotation(otherDirection);
+                    recoil = 1;                    
                 }
                 fireAud.Play();
                 var b = Instantiate(bullet, transform.position, rotation);
@@ -194,6 +218,8 @@ public class p1_controller : MonoBehaviour {
                     transform.position = other_player.transform.position;
                     other_player.transform.position = temp;
                     swapTimer = 0.0f;
+                    invulTimer = invulTime;
+                    other_player.GetComponent<p1_controller>().invulTimer = invulTime;
                 }
             }
             if (swapTimer < swapTime) {

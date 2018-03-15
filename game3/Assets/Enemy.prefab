@@ -460,3 +460,6 @@ MonoBehaviour:
   - {fileID: 0}
   maxHealth: 60
   playerId: 0
+  obstructionlayers:
+    serializedVersion: 2
+    m_Bits: 4294967039

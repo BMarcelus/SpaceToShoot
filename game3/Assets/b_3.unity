@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.43667546, g: 0.48427135, b: 0.5645225, a: 1}
+  m_IndirectSpecularColor: {r: 0.43667564, g: 0.48427147, b: 0.56452364, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -362,15 +362,6 @@ Prefab:
       propertyPath: other_player
       value: 
       objectReference: {fileID: 372065032}
-    - target: {fileID: 1892264625880070, guid: 9b787fd4698e147a3969157943bd9219, type: 2}
-      propertyPath: m_TagString
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 114729924438341430, guid: 9b787fd4698e147a3969157943bd9219,
-        type: 2}
-      propertyPath: maxHealth
-      value: 100
-      objectReference: {fileID: 0}
     - target: {fileID: 114729924438341430, guid: 9b787fd4698e147a3969157943bd9219,
         type: 2}
       propertyPath: swapBar
@@ -808,15 +799,6 @@ Prefab:
       propertyPath: other_player
       value: 
       objectReference: {fileID: 1931217684}
-    - target: {fileID: 1515004884236980, guid: eeac492c2b9b04ad7bf9dffeb790fca0, type: 2}
-      propertyPath: m_TagString
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 114975670004049046, guid: eeac492c2b9b04ad7bf9dffeb790fca0,
-        type: 2}
-      propertyPath: maxHealth
-      value: 100
-      objectReference: {fileID: 0}
     - target: {fileID: 114975670004049046, guid: eeac492c2b9b04ad7bf9dffeb790fca0,
         type: 2}
       propertyPath: swapBar
