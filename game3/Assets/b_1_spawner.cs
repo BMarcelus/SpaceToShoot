@@ -37,22 +37,91 @@ public class b_1_spawner : MonoBehaviour {
         else if (level == 3) {
             level3();
         }
+        else if (level == 4) {
+            level4();
+        }
     }
 
     void level1() {
-        if (counter < 15) {
+        if (counter == 0 && b_level1.killCount == 0) {
             instance(Enemy);
             ++counter;
-            if (counter >= 3) {
-                Debug.Log("decreasing time" + time);
-                if (time >= 1.0f) {
-                    time -= 0.25f;
-                }
-            }
+        }
+        if (counter == 1 && b_level1.killCount == 1) {
+            instance(Enemy);
+            instance(Enemy);
+            counter += 2;
+        }
+        if (counter == 3 && b_level1.killCount == 3) {
+            instance(Enemy);
+            instance(Enemy);
+            instance(Enemy);
+            counter += 3;
+        }
+        if (counter == 6 && b_level1.killCount == 6) {
+            instance(Enemy);
+            instance(Enemy);
+            instance(Enemy);
+            instance(Enemy);
+            instance(Enemy);
+            counter += 5;
+        }
+        if (counter == 11 && b_level1.killCount == 11) {
+            instance(Enemy);
+            instance(Enemy);
+            instance(Enemy);
+            instance(Enemy);
+            instance(Enemy);
+            instance(Enemy);
+            instance(Enemy);
+            counter += 7;
         }
     }
 
     void level2() {
+        if (counter == 0 && b_level1.killCount == 0) {
+            instance(Enemy2);
+            ++counter;
+        }
+        if (counter == 1 && b_level1.killCount == 1) {
+            instance(Enemy3);
+            ++counter;
+        }
+        if (counter == 2 && b_level1.killCount == 2) {
+            instance(Enemy2);
+            instance(Enemy3);
+            counter += 2;
+        }
+        if (counter == 4 && b_level1.killCount == 4) {
+            instance(Enemy);
+            instance(Enemy2);
+            instance(Enemy3);
+            counter += 3;
+        }
+        if (counter == 7 && b_level1.killCount == 7) {
+            instance(Enemy2);
+            instance(Enemy2);
+            instance(Enemy3);
+            instance(Enemy3);
+            instance(Enemy);
+            counter += 5;
+        }
+        if (counter == 12 && b_level1.killCount == 12) {
+            instance(Enemy2);
+            instance(Enemy2);
+            instance(Enemy2);
+            instance(Enemy3);
+            instance(Enemy3);
+            instance(Enemy3);
+            instance(Enemy);
+            counter += 7;
+        }
+    }
+
+
+
+
+    void oldlevel2() {
         if (counter == 0) {
             instance(Enemy2);
             ++counter;
@@ -78,7 +147,50 @@ public class b_1_spawner : MonoBehaviour {
         }
     }
 
+
     void level3() {
+        if (counter == 0 && b_level1.killCount == 0) {
+            instance(Enemy2);
+            instance(Enemy3);
+            instance(Enemy);
+            counter += 3;
+        }
+        if (counter == 3 && b_level1.killCount == 3) {
+            instance(Enemy2);
+            instance(Enemy2);
+            instance(Enemy2);
+            instance(Enemy2);
+            instance(Enemy2);
+            counter += 5;
+        }
+        if (counter == 8 && b_level1.killCount == 8) {
+            instance(Enemy);
+            instance(Enemy);
+            instance(Enemy2);
+            instance(Enemy3);
+            counter += 4;
+        }
+        if (counter == 12 && b_level1.killCount == 12) {
+            instance(Enemy3);
+            instance(Enemy3);
+            instance(Enemy3);
+            instance(Enemy3);
+            instance(Enemy3);
+            counter += 5;
+        }
+        if (counter == 17 && b_level1.killCount == 17) {
+            instance(Enemy);
+            instance(Enemy);
+            instance(Enemy);
+            instance(Enemy);
+            instance(Enemy);
+            instance(Enemy);
+            instance(Enemy);
+            counter += 7;
+        }
+    }
+
+    void level4() {
         if (counter == 0) {
             for (int i = 0; i < 4; ++i) {
                 instance(Enemy2);
@@ -105,7 +217,7 @@ public class b_1_spawner : MonoBehaviour {
                 instance(Enemy3);
             }
             ++counter;
-            if(time >=1){
+            if(time >= 2.0f){
                 time -= .5f;
             }
         }

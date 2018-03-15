@@ -1,12 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.AI;
 public class EnemeyScript : MonoBehaviour {
 
   public GameObject[] players;
   private Rigidbody rb;
-  private float speed = 3.0f;
+  private float speed = 4.0f;
   private Vector3 velocity = new Vector3();
   private Transform healthDisplay;
   private Vector3 startHealthSize;
@@ -20,11 +20,19 @@ public class EnemeyScript : MonoBehaviour {
   private float reflectEffectTime = .2f;
   private float hitEffectTimer = 0;
   private float hitEffectTime = .1f;
+
+  //private NavMeshAgent navAgent;
+
+
+
+
 	void Start () {
     rb = GetComponent<Rigidbody>();
     healthDisplay = transform.Find("Health");
     health = maxHealth;
     startHealthSize = healthDisplay.localScale;
+
+    //navAgent = GetComponent<NavMeshAgent>();
 	}
 	
 	// Update is called once per frame
@@ -63,6 +71,7 @@ public class EnemeyScript : MonoBehaviour {
 
     void moveToPlayer() {
         GameObject p = FindClosestPlayer();
+        //navAgent.destination = p.transform.position;
         velocity = p.transform.position - transform.position;
         rb.velocity = velocity.normalized * speed;
     }
@@ -97,7 +106,7 @@ public class EnemeyScript : MonoBehaviour {
         hitEffectTimer = hitEffectTime;
         if(health<=0) {
           Destroy(gameObject);
-          b_level1.killCount += 1;
+          ++b_level1.killCount;
           Debug.Log(b_level1.killCount);
           return;
         }

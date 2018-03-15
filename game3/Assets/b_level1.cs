@@ -15,6 +15,9 @@ public class b_level1 : MonoBehaviour {
         else if (level == 2) {
             SceneManager.LoadScene("b_3");
         }
+        else if (level == 3) {
+            SceneManager.LoadScene("b_4");
+        }
     }
 
 	// Use this for initialization
@@ -29,19 +32,25 @@ public class b_level1 : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         if (level == 1) {
-            if (killCount >= 15) {
+            if (killCount >= 18) {
                 Time.timeScale = 0;
                 winScreen.SetActive(true);
             }
         }
         if (level == 2) {
-            if (killCount > 20) {
+            if (killCount >= 19) {
                 Time.timeScale = 0;
                 winScreen.SetActive(true);
             }
         }
         if (level == 3) {
-            if (killCount > 20) {
+            if (killCount >= 24) {
+                Time.timeScale = 0;
+                winScreen.SetActive(true);
+            }
+        }
+        if (level == 4) {
+            if (killCount >= 30) {
                 Time.timeScale = 0;
                 winScreen.SetActive(true);
             }

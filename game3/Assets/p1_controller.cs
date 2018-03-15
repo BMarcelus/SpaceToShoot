@@ -8,7 +8,7 @@ public class p1_controller : MonoBehaviour {
     public float maxHealth = 100.0f;
     private float currentHealth;
     public float speed = 1.0f;
-    private float ROF = 2.0f;
+    private float ROF = 3.0f;
     public GameObject bullet;
     public UnityEngine.UI.Slider healthBar;
     public GameObject other_player;
@@ -24,8 +24,19 @@ public class p1_controller : MonoBehaviour {
 
     private float invulTimer = 0;
     private float invulTime = 1;
-    
+
+    public UnityEngine.UI.Slider swapBar;
+    public UnityEngine.UI.Slider modeBar;
+    private float swapTimer = 0.0f;
+    private float swapTime = 1.0f;
+    private float modeTimer = 0.0f;
+    private float modeTime = 1.0f;
+
+    public GameObject pauseMenu;
+    private bool paused;
 	void Start () {
+        pauseMenu.SetActive(false);
+        paused = false;
         rb = GetComponent<Rigidbody>();
         other_rb = other_player.GetComponent<Rigidbody>();
         buffer = 0.0f;
@@ -33,6 +44,8 @@ public class p1_controller : MonoBehaviour {
         healthBar.value = healthPercent();
         Debug.Log(player + " CurrentHealth: " + currentHealth);
         synced = true;
+        swapBar.value = 0;
+        modeBar.value = 0;
         if(player==1) {
             leftKey = KeyCode.A;
             upKey = KeyCode.W;
@@ -62,6 +75,23 @@ public class p1_controller : MonoBehaviour {
         invulTimer -= Time.deltaTime;
       }
       switchMode();
+      swap();
+
+      if (!paused && player == 1 && Input.GetKeyDown(KeyCode.Escape)) {
+          Time.timeScale = 0;
+          paused = true;
+          pauseMenu.SetActive(true);
+          var cp = pauseMenu.GetComponent<pauseButtons>().controlPanel;
+          cp.SetActive(false);
+      }
+      else if (paused && player == 1 && Input.GetKeyDown(KeyCode.Escape)) {
+          Time.timeScale = 1;
+          paused = false;
+          var cp = pauseMenu.GetComponent<pauseButtons>().controlPanel;
+          cp.SetActive(false);
+          pauseMenu.SetActive(false);
+
+      }
   }
 
     void move() {
@@ -117,12 +147,45 @@ public class p1_controller : MonoBehaviour {
     }
 
     void switchMode() {
-        if(Input.GetKeyDown(KeyCode.B)){
-            if(synced){
-                synced = false;
+        if (player == 1) {
+            if (modeTimer >= modeTime) {
+                if (synced && Input.GetKeyDown(KeyCode.RightShift)) {
+                    synced = false;
+                    ROF = ROF * 5;
+                }
+                if (!synced) {
+                    modeBar.value -= Time.deltaTime/10;
+                    if (modeBar.value <= 0) {
+                        synced = true;
+                        ROF = ROF / 5;
+                        modeTimer = 0.0f;
+                    }
+                }
             }
-            else{
-                synced = true;
+            if (modeTimer < modeTime) {
+                modeTimer += Time.deltaTime/25;
+                modeBar.value = modeTimer / modeTime;
+            }
+        }
+        if (player == 2) {
+            synced = other_player.GetComponent<p1_controller>().synced;
+            ROF = other_player.GetComponent<p1_controller>().ROF;
+        }
+    }
+
+    void swap() {
+        if (player == 1) {
+            if (swapTimer >= swapTime) {
+                if (Input.GetKey(KeyCode.LeftShift)) {
+                    Vector3 temp = transform.position;
+                    transform.position = other_player.transform.position;
+                    other_player.transform.position = temp;
+                    swapTimer = 0.0f;
+                }
+            }
+            if (swapTimer < swapTime) {
+                swapTimer += Time.deltaTime / 10;
+                swapBar.value = swapTimer / swapTime;
             }
         }
     }
