@@ -28,6 +28,8 @@ public class EnemeyScript : MonoBehaviour {
     //private NavMeshAgent navAgent;
   AudioSource gettingHit;
   AudioSource reflectAud;
+  public GameObject deathAudClass;
+  AudioSource deathAud;
 
 
 
@@ -35,6 +37,8 @@ public class EnemeyScript : MonoBehaviour {
     AudioSource[] auds = GetComponents<AudioSource>();
     gettingHit = auds[0];
     reflectAud = auds[1];
+    deathAudClass = GameObject.Find("deathAudClass");
+    deathAud = deathAudClass.GetComponent<AudioSource>();
     rb = GetComponent<Rigidbody>();
     healthDisplay = transform.Find("Health");
     health = maxHealth;
@@ -138,6 +142,7 @@ public class EnemeyScript : MonoBehaviour {
         transform.localScale = new Vector3(.9f,1f,.9f);
         hitEffectTimer = hitEffectTime;
         if(health<=0) {
+          deathAud.Play();
           Destroy(gameObject);
           if(!dead)
           ++b_level1.killCount;
