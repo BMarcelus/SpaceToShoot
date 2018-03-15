@@ -24,6 +24,11 @@ public class p1_controller : MonoBehaviour {
 
     private float invulTimer = 0;
     private float invulTime = 1;
+    AudioSource fireAud;
+    AudioSource dmgAud;
+    AudioSource friendlyAud;
+    AudioSource swapAud;
+    AudioSource knockingPlayer;
 
     public UnityEngine.UI.Slider swapBar;
     public UnityEngine.UI.Slider modeBar;
@@ -35,6 +40,12 @@ public class p1_controller : MonoBehaviour {
     public GameObject pauseMenu;
     private bool paused;
 	void Start () {
+        AudioSource[] auds = GetComponents<AudioSource>();
+        fireAud = auds[0];
+        dmgAud = auds[1];
+        friendlyAud = auds[2];
+        swapAud = auds[3];
+        knockingPlayer = auds[4];
         pauseMenu.SetActive(false);
         paused = false;
         rb = GetComponent<Rigidbody>();
@@ -136,6 +147,7 @@ public class p1_controller : MonoBehaviour {
                     Vector3 otherDirection = (other_rb.position - transform.position).normalized;
                     rotation = Quaternion.LookRotation(otherDirection);
                 }
+                fireAud.Play();
                 var b = Instantiate(bullet, transform.position, rotation);
                 b.transform.position += 1.5f * b.transform.forward;
                 b.GetComponent<bullet_controller>().parentId = player;
@@ -176,6 +188,7 @@ public class p1_controller : MonoBehaviour {
     void swap() {
         if (player == 1) {
             if (swapTimer >= swapTime) {
+                swapAud.Play();
                 if (Input.GetKey(KeyCode.LeftShift)) {
                     Vector3 temp = transform.position;
                     transform.position = other_player.transform.position;
@@ -192,7 +205,8 @@ public class p1_controller : MonoBehaviour {
 
     void OnTriggerEnter(Collider other){
         if(other.tag == "bullet" && other.GetComponent<bullet_controller>().parentId != player){
-            if(invulTimer>0)return;            
+            if(invulTimer>0)return;
+            friendlyAud.Play();
             TakeDamage(bullet_controller.damage/5.0f);
             Debug.Log(player + " CurrentHealth: " + currentHealth);
         }
@@ -200,7 +214,8 @@ public class p1_controller : MonoBehaviour {
     
     void OnCollisionEnter(Collision col) {
       if(col.gameObject.tag == "Enemy") {
-          if(invulTimer>0)return;        
+          if(invulTimer>0)return;
+          dmgAud.Play();
           TakeDamage(EnemeyScript.damage);
           Vector3 dist = col.gameObject.transform.position - transform.position;
           // transform.position -= dist.normalized*1;
@@ -211,8 +226,9 @@ public class p1_controller : MonoBehaviour {
       }
     }
 
-    private void TakeDamage(float amount) {
+    private void TakeDamage(float amount) {     
       invulTimer = invulTime;
+      knockingPlayer.Play();
       currentHealth -= amount;
       healthBar.value = healthPercent();
       if(currentHealth<=0) {

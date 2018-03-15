@@ -11,3 +11,21 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/death_screen.unity
     guid: 15264024cc9dd4745b295b30e90f7597
+  - enabled: 1
+    path: Assets/main_menu.unity
+    guid: 86ce81641b47c904d9858a344604c40d
+  - enabled: 1
+    path: Assets/b_1.unity
+    guid: 1aa61aef4e1f40847aa5010d0e44077e
+  - enabled: 1
+    path: Assets/b_2.unity
+    guid: 6a7ad56c52a3c3e4f9da8953d2bbb9ad
+  - enabled: 1
+    path: Assets/b_3.unity
+    guid: 49cf0fe1b0b4a85418085e6269fdc7f9
+  - enabled: 1
+    path: Assets/b_4.unity
+    guid: 3c6f3be3220f73445be855978f2d47de
+  - enabled: 1
+    path: Assets/instructions.unity
+    guid: 6e78cde2275d9a14da28fd99c58fe1e5

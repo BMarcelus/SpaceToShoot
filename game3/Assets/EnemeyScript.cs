@@ -21,12 +21,16 @@ public class EnemeyScript : MonoBehaviour {
   private float hitEffectTimer = 0;
   private float hitEffectTime = .1f;
 
-  //private NavMeshAgent navAgent;
+    //private NavMeshAgent navAgent;
+  AudioSource gettingHit;
+  AudioSource reflectAud;
 
 
 
-
-	void Start () {
+    void Start () {
+    AudioSource[] auds = GetComponents<AudioSource>();
+    gettingHit = auds[0];
+    reflectAud = auds[1];
     rb = GetComponent<Rigidbody>();
     healthDisplay = transform.Find("Health");
     health = maxHealth;
@@ -95,12 +99,14 @@ public class EnemeyScript : MonoBehaviour {
       bullet_controller bc = col.GetComponent<bullet_controller>();
       if(bc.parentId==7) return;
       if(playerId!=0&&bc.parentId!=playerId) {
+        reflectAud.Play();
         bc.parentId = 7;
         bc.transform.Rotate(new Vector3(0, 180, 0));
         bc.speed = bc.speed/2;
         reflectEffectTimer=reflectEffectTime;
         transform.localScale = new Vector3(1.1f,1.1f,1.1f);
       } else {
+        gettingHit.Play();
         health -= bullet_controller.damage;
         transform.localScale = new Vector3(.9f,1f,.9f);
         hitEffectTimer = hitEffectTime;
@@ -119,6 +125,7 @@ public class EnemeyScript : MonoBehaviour {
 
   void OnCollisionEnter(Collision col) {
       if (col.gameObject.tag == "Player") {
+          
           Vector3 dist = col.gameObject.transform.position - transform.position;
           rb.AddForce(-dist * 50, ForceMode.Impulse);
       }
