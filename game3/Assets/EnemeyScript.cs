@@ -14,7 +14,7 @@ public class EnemeyScript : MonoBehaviour {
   private float health;
   public static float damage = 5;
   public int playerId;
-  private float fallSpeed = 0.03f;
+  private float fallSpeed = 0;
 	// Use this for initialization
   private float reflectEffectTimer = 0;
   private float reflectEffectTime = .2f;
@@ -23,6 +23,7 @@ public class EnemeyScript : MonoBehaviour {
   private Vector3 targetPosition;
   private bool targetting = false;
   public LayerMask obstructionlayers;
+  private bool dead = false;
 
     //private NavMeshAgent navAgent;
   AudioSource gettingHit;
@@ -71,8 +72,8 @@ public class EnemeyScript : MonoBehaviour {
             moveToPlayer();
         }
         else {
-          fallSpeed += .01f;
-            rb.MovePosition(new Vector3(transform.position.x, transform.position.y - fallSpeed, transform.position.z));
+          fallSpeed += 20*Time.deltaTime;
+          rb.MovePosition(new Vector3(transform.position.x, transform.position.y - fallSpeed * Time.deltaTime, transform.position.z));
         }
     //rb.MovePosition(transform.position + (velocity.normalized * Time.deltaTime * speed));
 	}
@@ -138,7 +139,9 @@ public class EnemeyScript : MonoBehaviour {
         hitEffectTimer = hitEffectTime;
         if(health<=0) {
           Destroy(gameObject);
+          if(!dead)
           ++b_level1.killCount;
+          dead=true;
           Debug.Log(b_level1.killCount);
           return;
         }
